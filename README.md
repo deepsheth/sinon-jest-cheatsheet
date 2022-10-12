@@ -212,8 +212,9 @@ someObject.aMethod.mockRestore();
 ###### sinon
 
 ```js
-stub = sinon.stub(operations, 'add');
-stub.returns(89);
+stub = sinon.stub(operations, 'add').returns(89); // return function
+stub = sinon.stub(operations, 'count').value(10); // return property
+stub = sinon.stub(operations, 'fetch').resolves({ count: 100 }); // return resolved promise
 ```
 
 ```js
