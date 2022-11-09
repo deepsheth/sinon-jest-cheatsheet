@@ -36,13 +36,13 @@ npm run test:watch
 ## Table of Contents
 
 1. [Create Spies](#create-spies)
-2. [Are they called?](#are-they-called)
-3. [How many times?](#how-many-times)
-4. [Checking arguments](#checking-arguments)
-5. [Spy on objects methods](#spy-on-objects-method)
-6. [Reset and Restore original method](#restore-original-method)
-7. [Return value](#return-value)
-8. [Custom implementation](#custom-implementation)
+2. [Custom implementation](#custom-implementation)
+3. [Are they called?](#are-they-called)
+4. [How many times?](#how-many-times)
+5. [Checking arguments](#checking-arguments)
+6. [Spy on objects methods](#spy-on-objects-method)
+7. [Reset and Restore original method](#restore-original-method)
+8. [Return value](#return-value)
 9. [Poking into React component methods](#react-component-methods)
 10. [Timers](#timers)
 
@@ -58,15 +58,17 @@ npm run test:watch
 While **sinon** uses three different terms for its snooping functions: `spy`, `stub` and `mock`,
 **jest** uses mostly the term `mock function` for what'd be a spy/stub and `manual mock` or `mock` ...well, for mocks.
 
-### 1. Create spies:
 
-###### sinon
+### 1. Spies:
+
+#### Anonymous
+###### [sinon](https://sinonjs.org/releases/v14/spies/)
 
 ```js
 const spy = sinon.spy();
 ```
 
-###### jest
+###### [jest](https://jestjs.io/docs/jest-object#jestspyonobject-methodname)
 
 ```js
 const spy = jest.fn();
@@ -74,7 +76,73 @@ const spy = jest.fn();
 
 <a name="are-they-called"></a>
 
-### 2. Know if they are called:
+#### Spy on method
+###### [sinon](https://sinonjs.org/releases/v14/spies/)
+
+```js
+const stub = sinon.spy(object, "method"); // Replaces object.method with a stub function.
+```
+
+###### [jest](https://jestjs.io/docs/jest-object#jestspyonobject-methodname)
+
+```js
+const spy = jest.spyOn(object, methodName)
+```
+
+#### Mock implementation
+###### [sinon](https://sinonjs.org/releases/v14/spies/)
+
+```js
+const stub = sinon.stub();
+const methodStub = sinon.spy(object, "method");
+
+stub.returns(obj);
+stub.resolves(value); // return promise
+```
+
+###### [jest](https://jestjs.io/docs/mock-function-api#mockfnmockimplementationfn)
+
+```js
+const mock = jest.fn();
+const mockMethod = jest.spyOn(object, methodName)
+
+jest.fn().mockImplementation(implementation)
+jest.fn(implementation) // shorthand for the line above
+
+mock.mockImplementation(() => { return 2; }); // returns mock value, could also use .mockReturnValue(2)
+mock.mockImplementation(() => { return obj; }); // returns mock object
+
+```
+
+### 2. Custom implementation:
+
+###### sinon
+
+```js
+sinonStub.callsFake(function() {
+  return 'Peteco';
+});
+expect(operations.add(1, 2)).toEqual('Peteco');
+```
+
+Different implementation on different call:
+
+###### jest
+
+```js
+jest.spyOn(operations, 'add').mockImplementation(function(a, b, c) {
+  if (a === 42) {
+    return 89;
+  }
+  if (a === 4 && b === 9 && c === 32) {
+    return 'OK';
+  }
+});
+```
+
+<a name="react-component-methods"></a>
+
+### 3. Know if they are called:
 
 ###### sinon
 
@@ -95,7 +163,7 @@ expect(spy).toHaveBeenCalled();
 
 <a name="how-many-times"></a>
 
-### 3. How many times are called:
+### 4. How many times are called:
 
 ###### sinon
 
@@ -118,7 +186,7 @@ expect(spy).toHaveBeenCalledTimes(n);
 
 <a name="checking-arguments"></a>
 
-### 4. Checking arguments:
+### 5. Checking arguments:
 
 ###### sinon
 
@@ -155,7 +223,7 @@ expect(spy).toHaveBeenLastCalledWith(1, 'Hey');
 
 <a name="spy-on-objects-method"></a>
 
-### 5. Spy on objects' methods
+### 6. Spy on objects' methods
 
 ###### sinon
 
@@ -171,7 +239,7 @@ jest.spyOn(someObject, 'aMethod');
 
 <a name="restore-original-method"></a>
 
-### 6. Reset and Restore original method
+### 7. Reset and Restore original method
 
 ###### sinon
 
@@ -207,7 +275,7 @@ someObject.aMethod.mockRestore();
 
 <a name="return-value"></a>
 
-### 7. Spy on method and return value:
+### 8. Spy on method and return value:
 
 ###### sinon
 
@@ -247,34 +315,6 @@ expect(fn()).toEqual(7);
 ```
 
 <a name="custom-implementation"></a>
-
-### 8. Custom implementation:
-
-###### sinon
-
-```js
-sinonStub.callsFake(function() {
-  return 'Peteco';
-});
-expect(operations.add(1, 2)).toEqual('Peteco');
-```
-
-Different implementation on different call:
-
-###### jest
-
-```js
-jest.spyOn(operations, 'add').mockImplementation(function(a, b, c) {
-  if (a === 42) {
-    return 89;
-  }
-  if (a === 4 && b === 9 && c === 32) {
-    return 'OK';
-  }
-});
-```
-
-<a name="react-component-methods"></a>
 
 ### 9. Poking into React components methods:
 
