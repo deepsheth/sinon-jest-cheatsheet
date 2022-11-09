@@ -59,7 +59,7 @@ While **sinon** uses three different terms for its snooping functions: `spy`, `s
 **jest** uses mostly the term `mock function` for what'd be a spy/stub and `manual mock` or `mock` ...well, for mocks.
 
 
-### 1. Spies:
+### 1. Spies / Stubs
 
 #### Anonymous
 ###### [sinon](https://sinonjs.org/releases/v14/spies/)
@@ -80,7 +80,7 @@ const spy = jest.fn();
 ###### [sinon](https://sinonjs.org/releases/v14/spies/)
 
 ```js
-const stub = sinon.spy(object, "method"); // Replaces object.method with a stub function.
+const spy = sinon.spy(object, "method"); // Replaces object.method with a spy function.
 ```
 
 ###### [jest](https://jestjs.io/docs/jest-object#jestspyonobject-methodname)
@@ -89,7 +89,7 @@ const stub = sinon.spy(object, "method"); // Replaces object.method with a stub 
 const spy = jest.spyOn(object, methodName)
 ```
 
-#### Mock implementation
+#### Stub method & mock implementation
 ###### [sinon](https://sinonjs.org/releases/v14/spies/)
 
 ```js
@@ -111,7 +111,6 @@ jest.fn(implementation) // shorthand for the line above
 
 mock.mockImplementation(() => { return 2; }); // returns mock value, could also use .mockReturnValue(2)
 mock.mockImplementation(() => { return obj; }); // returns mock object
-
 ```
 
 ### 2. Custom implementation:
